@@ -1,15 +1,30 @@
-import logo from './logo.svg';
-import Layout from './components/layout/Layout';
-import { ResetCSS } from './globals/resetCSS';
-import Profile from './components/Profile/Profile'
-function App() {
+import React from "react";
+import Layout from "./components/layout";
+import NoSearch from "./components/no-search";
+import Profile from "./components/profile";
+import Repositories from "./components/repositories";
+import useGithub from "./hooks/github-hooks";
+
+const App = () => {
+  const { githubState } = useGithub();
   return (
-    <main>
-      <ResetCSS></ResetCSS>
-      <Layout></Layout>
-      <Profile></Profile>
-    </main>
+    <Layout>
+      {githubState.hasUser ? (
+        <>
+          {githubState.loading ? (
+            <p>Loading</p>
+          ) : (
+            <>
+              <Profile />
+              <Repositories />
+            </>
+          )}
+        </>
+      ) : (
+        <NoSearch />
+      )}
+    </Layout>
   );
-}
+};
 
 export default App;
